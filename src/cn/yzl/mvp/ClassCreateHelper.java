@@ -64,7 +64,6 @@ public class ClassCreateHelper {
 
         sb.append("import com.qianfan365.android.ebilling.hd.base.mvp.BasePresenter;\n\n");
 
-
         sb.append("public class " + className + "Presenter extends BasePresenter<" + className + "View>" + " {" + "\n\n");
 
         sb.append("public ###Presenter(###View mView) {\nsuper(mView);\n}\n\n".replace("###", className));
