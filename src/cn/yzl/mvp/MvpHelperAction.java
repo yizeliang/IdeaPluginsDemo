@@ -34,8 +34,8 @@ public class MvpHelperAction extends AnAction {
             }
 
             //F:\a\cn\yzl\eee.java
-            String path = ClassCreateHelper.getCurrentPath(event, className + ".java").replace(File.separator + className + ".java", "");
-
+            String path = ClassCreateHelper.getCurrentPath(event);
+            System.out.println(path);
             File pathF = new File(path);
 
             ClassCreateHelper.createViewInterface(pathF, javaFile.getPackageName(), className);
@@ -48,6 +48,7 @@ public class MvpHelperAction extends AnAction {
         } catch (Exception exception) {
             exception.printStackTrace();
             MessagesCenter.showMessage("请确认当前文件是不是java文件", "创建失败");
+            MessagesCenter.showErrorMessage(exception.getMessage(),"创建失败");
             return;
         }
     }

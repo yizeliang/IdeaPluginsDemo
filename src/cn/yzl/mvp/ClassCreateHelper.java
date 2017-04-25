@@ -20,17 +20,16 @@ public class ClassCreateHelper {
      * 获取一个文件的路径
      *
      * @param e
-     * @param classFullName ex:nihao.java
      * @return
      */
-    public static String getCurrentPath(AnActionEvent e, String classFullName) {
+    public static String getCurrentPath(AnActionEvent e) {
 
         VirtualFile currentFile = DataKeys.VIRTUAL_FILE.getData(e.getDataContext());
-
-        String path = currentFile.getPath().replace(classFullName, "");
+        String path = currentFile.getPath();
+        System.out.println(path);
+        path = path.substring(0,currentFile.getPath().lastIndexOf("/"));
         return path;
     }
-
 
     public static void createViewInterface(File pathF, String packageName, String className) throws IOException, FileExsitException {
         File targetFile = new File(pathF + File.separator + className + "View.java");
