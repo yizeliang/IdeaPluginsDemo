@@ -1,11 +1,15 @@
 package cn.yzl.translate;
 
+import cn.yzl.utils.StringUtil;
 import com.alibaba.fastjson.JSON;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+
+import java.net.URI;
+import java.net.URL;
 
 /**
  * Created by YZL on 2017/4/25.
@@ -18,15 +22,18 @@ public class TranslateUtil {
 
 
     /**
-     * 翻译为英文
+     * 翻译
      *
      * @param en
      * @return
      */
     public static Modle translateToEn(String en) {
+        en = StringUtil.getWords(en);
         CloseableHttpClient client = HttpClients.createDefault();
-        HttpGet get = new HttpGet(url + en);
         try {
+            URL myUrl = new URL(url + en);
+            URI uri = new URI(myUrl.getProtocol(), myUrl.getHost(), myUrl.getPath(), myUrl.getQuery(), null);
+            HttpGet get = new HttpGet(uri);
             CloseableHttpResponse execute = client.execute(get);
             if (execute.getStatusLine().getStatusCode() == 200) {
                 String result = EntityUtils.toString(execute.getEntity(), "utf-8");
@@ -42,6 +49,5 @@ public class TranslateUtil {
         }
         return null;
     }
-
 
 }
