@@ -30,6 +30,7 @@ public class Translate extends AnAction {
     private String resultText;
     private Project mProject;
     private Document document;
+    private Modle resultModel;
 
     @Override
     public void actionPerformed(AnActionEvent event) {
@@ -46,11 +47,13 @@ public class Translate extends AnAction {
             if (resultText == null) {
                 return;
             }
+            this.resultModel=modle;
+
             if (StringUtil.isContainChinese(selectedText)) {
                 //译成英文的情况
                 showSeletUI();
             } else {
-                showPop(modle.toString());
+                showPop();
             }
         } catch (NullPointerException e) {
             MessagesCenter.showErrorMessage("翻译失败", "插件错误");
@@ -76,7 +79,7 @@ public class Translate extends AnAction {
      * 显示选择dialog
      */
     private void showSeletUI() {
-        SelectUI ui = new SelectUI(resultText, text -> changeSelectText(text));
+        SelectUI ui = new SelectUI(resultModel, text -> changeSelectText(text));
         ui.setVisible(true);
     }
 
@@ -98,12 +101,11 @@ public class Translate extends AnAction {
 
     /**
      * 显示英文翻译解释
-     * @param text
      */
-    public void showPop(String text) {
+    public void showPop() {
         //翻译成中文
         JBPopupFactory jbPopupFactory = JBPopupFactory.getInstance();
-        jbPopupFactory.createHtmlTextBalloonBuilder(text,
+        jbPopupFactory.createHtmlTextBalloonBuilder(resultModel.toString(),
                 null,
                 new JBColor(new Color(186, 238, 186),
                         new Color(73, 117, 73)),

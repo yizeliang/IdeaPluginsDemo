@@ -1,16 +1,16 @@
 <idea-plugin version="2">
     <id>cn.yzl.myplugins</id>
-    <name>myplugins</name>
+    <name>MyPlugins</name>
     <version>1.0.0</version>
     <vendor email="yizeliang@126.com" url="https://github.com/yizeliang">github_yzl</vendor>
 
     <description><![CDATA[
-     学习使用
+     学习使用<br>
+     翻译快捷键Alt+M
     ]]></description>
 
     <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
+      随便更新更新<br>
     ]]>
     </change-notes>
 
@@ -24,7 +24,6 @@
     -->
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
     </extensions>
 
     <actions>

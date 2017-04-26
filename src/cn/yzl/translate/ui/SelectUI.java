@@ -1,5 +1,7 @@
 package cn.yzl.translate.ui;
 
+import cn.yzl.translate.Modle;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -11,7 +13,7 @@ import java.util.Vector;
 public class SelectUI extends JDialog {
     private JPanel contentPane;
     private JList resultList;
-    private String mText;
+    private Modle model;
     private SelectCallBack callBack;
 
     public SelectUI() {
@@ -32,9 +34,9 @@ public class SelectUI extends JDialog {
 
     }
 
-    public SelectUI(String mText, SelectCallBack callBack) {
+    public SelectUI(Modle model, SelectCallBack callBack) {
         this();
-        this.mText = mText;
+        this.model = model;
         this.callBack = callBack;
         initList();
     }
@@ -42,13 +44,17 @@ public class SelectUI extends JDialog {
     private void initList() {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-        Vector<String> data = generateCode(mText);
-        data.add(mText);
-
+        Vector<String> data = new Vector<>();
+        for (int i = 0; i < model.getTranslation().size(); i++) {
+            data.addAll(generateCode(model.getTranslation().get(i)));
+        }
+        if (model.getBasic().getExplains() != null) {
+            for (int i = 0; i < model.getBasic().getExplains().size(); i++) {
+                data.addAll(generateCode(model.getBasic().getExplains().get(i)));
+            }
+        }
         resultList.setListData(data);
-
         resultList.setSelectedIndex(0);
-
         /**
          * 增加键盘处理事件
          */
@@ -106,8 +112,11 @@ public class SelectUI extends JDialog {
     }
 
     private Vector<String> generateCode(String mText) {
-        String text = mText.replace(" ", "");
-
+//        String text = mText.replace(" ", "");
+        //去掉括号里面的内容
+        String text = mText.replaceAll("\\(.*?\\)|\\{.*?}|\\[.*?]|（.*?）", "");
+        //去掉非英文字符
+        text = text.replaceAll("[^a-zA-Z]+", "");
         Vector<String> vector = new Vector<>();
 
         if (text.startsWith("the")) {
@@ -116,18 +125,23 @@ public class SelectUI extends JDialog {
             vector.addAll(generateCode(text.replace("The", "")));
         }
 
-
-        vector.add("m" + text);
-
         String temp = new String();
-        temp += text.substring(0, 1).toLowerCase();
+        temp = "m";
+        temp += text.substring(0, 1).toUpperCase();
         if (text.length() > 1) {
             temp += text.substring(1, text.length());
         }
         vector.add(temp);
 
         temp = new String();
+        temp += text.substring(0, 1).toLowerCase();
+        if (text.length() > 1) {
+            temp += text.substring(1, text.length());
+        }
+        vector.add(temp);
 
+
+        temp = new String();
         temp += text.substring(0, 1).toUpperCase();
 
         if (text.length() > 1) {
@@ -141,4 +155,11 @@ public class SelectUI extends JDialog {
         void selected(String text);
     }
 
+    public static void main(String[] args) {
+        String s = "我是一个人（中国人）aaa[真的]bbbb{确定}";
+
+        s = s.replaceAll("\\(.*?\\)|\\{.*?}|\\[.*?]|（.*?）", "");
+
+        System.out.println(s);
+    }
 }
