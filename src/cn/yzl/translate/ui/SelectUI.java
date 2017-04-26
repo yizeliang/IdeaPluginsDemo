@@ -14,13 +14,11 @@ public class SelectUI extends JDialog {
     private String mText;
     private SelectCallBack callBack;
 
-    private int selIndex;
-
     public SelectUI() {
         setContentPane(contentPane);
         {
             //设置大小
-            setMinimumSize(new Dimension(800, 200));
+            setMinimumSize(new Dimension(800, 250));
             //居中
             Toolkit kit = Toolkit.getDefaultToolkit(); // 定义工具包
             Dimension screenSize = kit.getScreenSize(); // 获取屏幕的尺寸
@@ -31,6 +29,7 @@ public class SelectUI extends JDialog {
             setLocation(screenWidth - width / 2, screenHeight - height / 2);
         }
         setModal(true);
+
     }
 
     public SelectUI(String mText, SelectCallBack callBack) {
@@ -44,6 +43,7 @@ public class SelectUI extends JDialog {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         Vector<String> data = generateCode(mText);
+        data.add(mText);
 
         resultList.setListData(data);
 
@@ -106,32 +106,34 @@ public class SelectUI extends JDialog {
     }
 
     private Vector<String> generateCode(String mText) {
-        mText = mText.replace(" ", "");
+        String text = mText.replace(" ", "");
 
         Vector<String> vector = new Vector<>();
 
-        if (mText.startsWith("the")) {
-            vector.addAll(generateCode(mText.replace("the", "")));
-        } else if (mText.startsWith("The")) {
-            vector.addAll(generateCode(mText.replace("The", "")));
+        if (text.startsWith("the")) {
+            vector.addAll(generateCode(text.replace("the", "")));
+        } else if (text.startsWith("The")) {
+            vector.addAll(generateCode(text.replace("The", "")));
         }
 
 
-        vector.add("m" + mText);
+        vector.add("m" + text);
 
         String temp = new String();
-        temp += mText.substring(0, 1).toLowerCase();
-        if (mText.length() > 1) {
-            temp += mText.substring(1, mText.length());
-        }
-        vector.add(temp);
-        temp = new String();
-        temp += mText.substring(0, 1).toUpperCase();
-        if (mText.length() > 1) {
-            temp += mText.substring(1, mText.length());
+        temp += text.substring(0, 1).toLowerCase();
+        if (text.length() > 1) {
+            temp += text.substring(1, text.length());
         }
         vector.add(temp);
 
+        temp = new String();
+
+        temp += text.substring(0, 1).toUpperCase();
+
+        if (text.length() > 1) {
+            temp += text.substring(1, text.length());
+        }
+        vector.add(temp);
         return vector;
     }
 
